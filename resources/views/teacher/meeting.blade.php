@@ -390,7 +390,6 @@
 <body class="antialiased">
     <form action="{{ route('meeting.create') }}" method="POST">
         @csrf
-        @method('POST')
         <div class="container mt-5">
             <div class="card p-3 mx-auto" style="width: 50%;">
                 <h4 class="text-primary">Create Meeting</h4>
@@ -403,6 +402,7 @@
                             <i class="fas fa-calendar input-prefix" tabindex=0></i>
                         </div>
                     </div>
+                    <input type="hidden" name="course_id" value="{{$assign_course->course_id}}">
 
                     <div class="col-md-12 mb-4">
                         <div class="md-form md-outline input-with-post-icon datepicker" id="prefill">

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\Meeting;
+use App\Models\TeacherCourse;
 use Google_Client;
 use Google_Service_Calendar;
 use Illuminate\Http\Request;
@@ -10,6 +13,7 @@ use Google\Service\Calendar\EventDateTime;
 use Google_Service_Calendar_ConferenceSolutionKey;
 use Google_Service_Calendar_ConferenceData;
 use Google_Service_Calendar_CreateConferenceRequest;
+use Illuminate\Support\Facades\DB;
 
 class MeetingController extends Controller
 {
@@ -24,8 +28,15 @@ class MeetingController extends Controller
         return Redirect::to($client->createAuthUrl());
     }
 
+    public function viewMeeting($id){
+        $assign_course = DB::table('teacher_courses')->where('course_id', $id)->first();
+
+        return view('teacher.meeting', compact('assign_course'));
+    }
+
     public function create(Request $request)
     {
+        // dd($request->all());
         $client = new Google_Client();
         $client->setAuthConfig('client_secrets.json');
         $client->addScope(Google_Service_Calendar::CALENDAR_EVENTS);
@@ -76,6 +87,13 @@ class MeetingController extends Controller
 
         // Retrieve the generated Google Meet link from the event's conference data
         $meetLink = $event->getHangoutLink();
+
+        $meeting = new Meeting();
+        $meeting->start_time = $request->start_time;
+        $meeting->end_time = $request->end_time;
+        $meeting->meet_link = $meetLink;
+        $meeting->course_id = $request->course_id;
+        $meeting->save();
 
         return view('teacher.success', compact('meetLink'));
     }

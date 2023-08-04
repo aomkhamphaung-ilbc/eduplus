@@ -59,4 +59,8 @@ class Course extends Model
 
         return $this->belongsToMany(Teacher::class,'teacher_courses', 'course_id','teacher_id');
     }
+
+    public function meeting(){
+        return $this->hasOne(Meeting::class);
+    }
 }

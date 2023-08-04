@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\TeacherController;
+use App\Models\TeacherCourse;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,21 +28,24 @@ use App\Http\Controllers\Admin\CategoryController;
 */
 
 /**Teacher Routes*/
-Route::group(['middleware' => 'admin'], function () {
+// Route::group(['middleware' => 'admin'], function () {
 Route::get('/teacher/login',[LoginController::class,'showTeacherLoginForm'])->name('teacher.login-view');
 Route::post('/teacher/login',[LoginController::class,'loginAsTeacher'])->name('teacher.login');
 Route::get('/teacher/register',[RegisterController::class,'showTeacherRegisterForm'])->name('teacher.register-view');
 Route::post('/teacher/register',[RegisterController::class,'createTeacher'])->name('teacher.register');
 Route::get('/auth/google', [GoogleAuthController::class,'redirectToGoogle'])->name('google.auth');
 Route::get('/auth/google/callback', [GoogleAuthController::class,'handleGoogleCallback']);
-Route::post('/meeting/create', [MeetingController::class,'create'])->name('meeting.create');
-Route::get('/meeting/create', function(){
-    return view('teacher.meeting');
-})->name('view-meeting');
+// Route::post('/meeting/create', [MeetingController::class,'create'])->name('meeting.create');
+// Route::get('/meeting/create', function(){
+//     return view('teacher.meeting');
+// })->name('view-meeting');
+
+Route::post('/meeting/view/{courseId}', [MeetingController::class, 'viewMeeting'])->name('meeting.view');
+Route::post('/meeting/create', [MeetingController::class, 'create'])->name('meeting.create');
 Route::get('/success', function(){
     return view('teacher.success');
-});
-});
+})->name('success');
+// });
 
 /**User Routes*/
 Route::post('/phone/register', [AuthController::class,'getStart'])->name('register');
@@ -126,3 +131,10 @@ Route::get('/courses/{id}', [CourseController::class,'show'])->name('courses.sho
 Route::get('/courses/{id}/edit', [CourseController::class,'edit'])->name('courses.edit');
 Route::put('/courses/{id}', [CourseController::class,'update'])->name('courses.update');
 Route::delete('/courses/{id}', [CourseController::class,'destroy'])->name('courses.destroy');
+
+
+//Teachers routes
+Route::get('/assign-courses', [TeacherController::class, 'index'])->name('teacher.index');
+Route::get('/assign-courses/create', [TeacherController::class, 'create'])->name('assign_courses.create');
+Route::post('/assign-courses', [TeacherController::class, 'store'])->name('assign_courses.store');
+Route::delete('/assign-courses/{teacher}/{course}', [TeacherController::class, 'destroy'])->name('assign-courses.destroy');

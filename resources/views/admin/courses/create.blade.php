@@ -59,6 +59,24 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="teacher_id[]">Choose Teachers:</label>
+                                <select name="teacher_id[]" id="teacher_id[]">
+                                    @foreach ($teachers as $teacher)
+                                        <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                    @endforeach
+                                </select><br>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subcategory[]">Choose Sub Category:</label>
+                                <select name="subcategory[]" id="subcategory[]">
+                                    @foreach ($subcategories as $subcategory)
+                                        <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                    @endforeach
+                                </select><br>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="description">Description:</label>
                                 <textarea name="description" id="description" required></textarea><br>
                                 @error('description')
@@ -97,6 +115,48 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            <!-- Meeting related fields -->
+
+                            <div class="form-group">
+
+                                <label for="start_time">Meeting Start Time:</label>
+
+                                <input type="datetime-local" name="start_time" id="start_time" required><br>
+
+                                @error('start_time')
+
+                                    <span class="invalid-feedback" role="alert">
+
+                                        <strong>{{ $message }}</strong>
+
+                                    </span>
+
+                                @enderror
+
+                            </div>
+
+ 
+
+                            <div class="form-group">
+
+                                <label for="end_time">Meeting End Time:</label>
+
+                                <input type="datetime-local" name="end_time" id="end_time" required><br>
+
+                                @error('end_time')
+
+                                    <span class="invalid-feedback" role="alert">
+
+                                        <strong>{{ $message }}</strong>
+
+                                    </span>
+
+                                @enderror
+
+                            </div>
+
+                            <!-- End of Meeting related fields -->
 
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
